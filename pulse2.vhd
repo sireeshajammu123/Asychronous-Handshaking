@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 20.11.2024 12:52:01
+-- Create Date: 20.11.2024 15:20:52
 -- Design Name: 
--- Module Name: pulse - Behavioral
+-- Module Name: pulse2 - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -33,20 +33,20 @@ use UNISIM.vcomponents.all;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity pulse is
+entity pulse2 is
   port (
-    clk_pulse1 : in std_logic;
-    resetp1 : in std_logic;
-    P1 : in std_logic;
-    dc1 : out std_logic;
-    en1 : in std_logic
+    clk_pulse2 : in std_logic;
+    resetp2 : in std_logic;
+    P2 : in std_logic;
+    dc2 : out std_logic;
+    en2 : in std_logic
   );
-end pulse;
+end pulse2;
 
-architecture Behavorial of pulse is
+architecture Behavorial of pulse2 is
  -- signal state : std_logic:='0';
   --signal locked : std_logic;
-  signal q_int1: std_logic;
+  signal q_int2: std_logic;
   --signal q_int2: std_logic;
   --signal q_int3: std_logic;
 
@@ -91,11 +91,11 @@ begin
     generic map (
     INIT => '0') -- Initial value of register ('0' or '1')
     port map (
-    Q => q_int1, -- Data output
-    C => P1, -- Clock input
+    Q => q_int2, -- Data output
+    C => P2, -- Clock input
     CE => '1', -- Clock enable input
-    CLR => q_int1, -- Asynchronous clear input
-    D => en1 -- Data input
+    CLR => q_int2, -- Asynchronous clear input
+    D => en2 -- Data input
     );
 --    FDCE2_inst : FDCE
 --    generic map (
@@ -117,6 +117,6 @@ begin
 --    CLR => q_int3, -- Asynchronous clear input
 --    D => en -- Data input
 --    );
-    dc1 <=not(q_int1);
+    dc2 <=not(q_int2);
 
 end Behavorial;
