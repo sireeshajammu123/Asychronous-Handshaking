@@ -35,7 +35,9 @@ entity Asyc_Handshaking is
  Port (
         CLK   : in  std_logic;
         RESET : in  std_logic;
-        LED  : out std_logic_vector(4 downto 0);
+        X     : in std_logic_vector(1 downto 0);
+        Y     : in std_logic_vector(1 downto 0);
+        LED  : out std_logic_vector(3 downto 0);
         TOGGLE: in std_logic
         );
 end Asyc_Handshaking;
@@ -44,7 +46,7 @@ architecture Behavioral of Asyc_Handshaking is
 
  signal slow_clk, resetn : std_logic;
  signal dc_out1, f1, fbar1, p1, en1, dc_out2, f2, fbar2, p2, en2: std_logic;
- signal x_in1, x_in2:std_logic_vector(3 downto 0);
+ --signal x_in1, x_in2:std_logic_vector(3 downto 0);
  signal yxor2: std_logic:='0';
  signal yxor1: std_logic:='0';
  signal y1clk: std_logic:='0';
@@ -141,7 +143,7 @@ resetn <= not(RESET);
  
     port map (
         dcbar1  => dc_out1,
-        x1  => x_in1,
+        x1  => X,
         f_out1 => f1,
         fbar_out1 => fbar1
     );
@@ -150,7 +152,7 @@ resetn <= not(RESET);
  
     port map (
         dcbar2  => dc_out2,
-        x2  => x_in2,
+        x2  => Y,
         f_out2 => f2,
         fbar_out2 => fbar2
     );
