@@ -47,7 +47,7 @@ architecture Behavorial of pulse is
  -- signal state : std_logic:='0';
   --signal locked : std_logic;
   signal q_int1: std_logic;
-  --signal q_int2: std_logic;
+  signal q_int_clk: std_logic;
   --signal q_int3: std_logic;
 
   
@@ -86,6 +86,7 @@ begin
 --    CLR => q_int3, -- Asynchronous clear input
 --    D => en -- Data input
 --    );
+
     
     FDCE_inst : FDCE
     generic map (
@@ -94,9 +95,19 @@ begin
     Q => q_int1, -- Data output
     C => P1, -- Clock input
     CE => '1', -- Clock enable input
-    CLR => q_int1, -- Asynchronous clear input
-    D => en1 -- Data input
+    CLR => q_int_clk, -- Asynchronous clear input
+    D => '1'--en1 -- Data input
     );
+    process (clk_pulse1)
+    begin
+    if rising_edge(clk_pulse1) then
+    q_int_clk<=q_int1;
+   
+    end if;
+    end process;
+    
+    
+    
 --    FDCE2_inst : FDCE
 --    generic map (
 --    INIT => '0') -- Initial value of register ('0' or '1')
@@ -117,6 +128,6 @@ begin
 --    CLR => q_int3, -- Asynchronous clear input
 --    D => en -- Data input
 --    );
-    dc1 <=not(q_int1);
+    dc1 <= (q_int_clk);
 
 end Behavorial;

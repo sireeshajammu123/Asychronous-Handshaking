@@ -35,8 +35,8 @@ entity Asyc_Handshaking is
  Port (
         CLK   : in  std_logic;
         RESET : in  std_logic;
-        X     : in std_logic_vector(1 downto 0);
-        Y     : in std_logic_vector(1 downto 0);
+        X     : in std_logic_vector(3 downto 0);
+     --   Y     : in std_logic_vector(1 downto 0);
         LED  : out std_logic_vector(3 downto 0);
         TOGGLE: in std_logic
         );
@@ -74,17 +74,9 @@ architecture Behavioral of Asyc_Handshaking is
             en1 : in std_logic
         );
     end component;
-    
-    component pulse2 is
-   
-        Port (
-            clk_pulse2 : in std_logic;
-            resetp2 : in std_logic;
-            P2 : in std_logic;
-            dc2: out std_logic;
-            en2 : in std_logic
-        );
-    end component;
+    attribute dont_touch : string;
+    attribute dont_touch of pulse : component is "yes";
+
     
       component DRDL is
        
@@ -95,6 +87,7 @@ architecture Behavioral of Asyc_Handshaking is
              fbar_out1: out std_logic
         );
     end component;
+     attribute dont_touch of DRDL : component is "yes";
     
     component DRDL1 is
        
@@ -105,6 +98,7 @@ architecture Behavioral of Asyc_Handshaking is
              fbar_out2: out std_logic
         );
     end component;
+     attribute dont_touch of DRDL1 : component is "yes";
     
 begin
 resetn <= not(RESET);
@@ -122,21 +116,20 @@ resetn <= not(RESET);
     pulse_inst : pulse
   
     port map (
-        clk_pulse1  => CLK,
+        clk_pulse1  => slow_clk,
         resetp1 => resetn,
         p1 => y2clk,
         dc1 => dc_out1,
         en1 => en1
     );
     
-    pulse2_inst : pulse2
-  
+    pulse2_inst : pulse
     port map (
-        clk_pulse2  => CLK,
-        resetp2 => resetn,
-        p2 => start,
-        dc2 => dc_out2,
-        en2 => en2
+        clk_pulse1  => slow_clk,
+        resetp1 => resetn,
+        p1 => start,
+        dc1 => dc_out2,
+        en1 => en2
     );
     
       DRDL_inst : DRDL
@@ -152,7 +145,7 @@ resetn <= not(RESET);
  
     port map (
         dcbar2  => dc_out2,
-        x2  => Y,
+        x2  => X,
         f_out2 => f2,
         fbar_out2 => fbar2
     );
@@ -175,7 +168,7 @@ resetn <= not(RESET);
     begin 
     if rising_edge(slow_clk) then 
     y1clk<=yxor1;
-    y2clk<=yxor1;
+    y2clk<=yxor2;
     end if;
    end process;
    
@@ -190,8 +183,8 @@ resetn <= not(RESET);
    
    led(0)<=f1;
    led(1)<=f2;
-   led(2)<=y1clk;
-   led(3)<=y2clk;
+   led(2)<=dc_out1;
+   led(3)<=dc_out2;
    
     
 
